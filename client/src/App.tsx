@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -39,23 +39,50 @@ import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Skeleton } from './components/ui/skeleton';
 
-
-
 function App() {
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [resultBoxState, setResultBoxState] = useState<"prompt"|"fetching"|"answer">("prompt")
+  const [resultBoxText, setResultBoxText] = useState<string>()
+  const akkadianTextArea = useRef<HTMLTextAreaElement>(null);
 
   async function fetchTranslation() {
+    let fetchAkkadianURL = import.meta.env.VITE_AKKADIAN_URL
+    let akkadianText = akkadianTextArea.current!.value;
     setResultBoxState('fetching')
     try {
-      let res = await fetch("http://localhost:8000");
-      let data = await res.json(); // Wait for the JSON data
-      console.log(data);
-      setResultBoxState("answer")
-    } catch (error) {
-      setResultBoxState("prompt")
-      console.error("Error fetching translation:", error);
-    }
+        const response = await fetch(fetchAkkadianURL, { // Use the URL from .env
+          method: 'POST', // Change to POST request
+          headers: {
+            'Content-Type': 'application/json', // Specify that we're sending JSON data
+          },
+          body: JSON.stringify({ text: akkadianText }), // Send the Akkadian text in the request body
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Error fetching translation:", errorData);
+          setResultBoxState("prompt");
+          return;
+        }
+
+        let data = await response.json(); // Wait for the JSON data
+        console.log(data);
+        // Assuming your backend returns the translation in the 'message' field
+        // You might need to adjust this based on your backend's response structure
+        // For example, if the translation is directly in 'data', you'd use data
+        if (data && data.message) {
+          // Update your UI with the translated text (assuming you have a state or variable for this)
+          // Example: setTranslationResult(data.message);
+          setResultBoxState("answer");
+          setResultBoxText(data.message);
+        } else {
+          console.error("Unexpected response structure:", data);
+          setResultBoxState("prompt");
+        }
+      } catch (error) {
+        setResultBoxState("prompt");
+        console.error("Error fetching translation:", error);
+      }
   }
 
   return <main className='bg-purple-500 w-full h-screen flex flex-col'>
@@ -103,7 +130,7 @@ function App() {
     <section className='flex-1 grid grid-rows-2 gap-4 p-4 md:gap-8 md:p-8 grid-cols-1 md:grid-cols-2 md:grid-rows-1 '>
       <div className=' flex items-center justify-center ' >
         <div className=' bg-gray-200 w-full h-full rounded-2xl p-4 shadow-lg shadow-black/20'>
-          <textarea placeholder='Enter Akkadian Text' name="inp" id="" className='w-full h-full resize-none outline-0'></textarea>
+          <textarea ref={akkadianTextArea} placeholder='Enter Akkadian Text' name="inp" id="" className='w-full h-full resize-none outline-0'></textarea>
         </div>
       </div>
       <div className=' flex items-center justify-center  ' >
@@ -113,6 +140,7 @@ function App() {
             <>
               { resultBoxState == "prompt" && <h1 className='text-gray-400 italic'>Translation will go here</h1>}
               { resultBoxState == "fetching" && <TranslationSkeleton />}
+              { resultBoxState == "answer" && <h1 className='text-gray-600'>{resultBoxText}</h1>}
             </>
           </AnimatePresence>
         </div>

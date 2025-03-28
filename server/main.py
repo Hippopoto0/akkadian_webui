@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Body
+from typing import Dict
+
 from transformers import AutoModelForSeq2SeqLM, MarianTokenizer
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -34,6 +36,21 @@ async def read_root():
     output = translateMarianMT("un-gal_-_nibru-ki gaszan_ szur-bu-tu _gaszan_-ia szi-pir szu-a-tu ha-disz lip-pa-lis-ma a-mat _sig5_-ti-ia lisz-szA-kin szap-tusz-szA _tin ud-mesz su-mesz_ sze-bé-e lit-tu-u-tu _dug_-ub _uzu_ u hu-ud lib-bi li-szim szi-ma-a-ti")
 
     return {"message": output}
+
+@app.post("/translate")
+async def translate_akkadian(request_body: Dict = Body(...)):
+    """
+    Receives Akkadian text and returns the translation.
+    """
+    try:
+        akkadian_text = request_body.get("text")
+        if not akkadian_text:
+            raise HTTPException(status_code=400, detail="Missing 'text' in the request body")
+
+        translation_output = translateMarianMT(akkadian_text)
+        return {"message": translation_output}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Translation error: {str(e)}")
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int, q: str = None):
