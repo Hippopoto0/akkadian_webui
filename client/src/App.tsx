@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef, useState } from 'react'
 import './App.css'
 import { FaLongArrowAltRight } from "react-icons/fa";
 import englishLogo from "./assets/english_communication.png"
@@ -10,16 +8,7 @@ import sentences from "./assets/sentences.json"
 import { IoSend } from "react-icons/io5";
 
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import { AnimatePresence, motion, stagger } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 
 import {
   Dialog,
@@ -150,11 +139,20 @@ function App() {
       {/* <a href="#">Guide</a> */}
         <Dialog>
           <DialogTrigger className='cursor-pointer w-20 h-10 rounded-lg font-bold bg-gray-300 inline-flex items-center justify-center'>Guide</DialogTrigger>
-          <DialogContent>
+          <DialogContent className='bg-white'>
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogTitle>Guide</DialogTitle>
               <DialogDescription>
-
+                  <p>
+                  If you hit Example Sentences, a pop-up will appear with a bunch of transliterated Akkadian Sentences.
+                  </p>
+                  <p>
+                  Either manually copy or click the copy button to copy the sentence to your clipboard, paste it into to the input and translate!
+                  </p>
+                  <p>
+                  If you want to find different sentences, I'd recommend at this time going to the CDLI website, and searching through the corpus.
+                  I want to add a tool that searches through and gives images too, but that will take time a double-check over licensing, this is a demo host. 
+                  </p>
               </DialogDescription>
             </DialogHeader>
           </DialogContent>
