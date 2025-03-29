@@ -70,7 +70,7 @@ function App() {
     setResultBoxState('fetching')
     try {
         const response = await fetch(fetchAkkadianURL, { // Use the URL from .env
-          method: 'GET', // Change to POST request
+          method: 'POST', // Change to POST request
           headers: {
             'Content-Type': 'application/json', // Specify that we're sending JSON data
           },
