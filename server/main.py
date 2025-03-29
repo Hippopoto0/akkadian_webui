@@ -38,7 +38,7 @@ async def read_root():
 
     return {"message": output}
 
-@app.post("/translate")
+@app.post("/translate/")
 async def translate_akkadian(request_body: Dict = Body(...)):
     """
     Receives Akkadian text and returns the translation.
