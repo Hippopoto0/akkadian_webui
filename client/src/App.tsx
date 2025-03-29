@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { FaLongArrowAltRight } from "react-icons/fa";
 import englishLogo from "./assets/english_communication.png"
@@ -28,11 +28,41 @@ import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Skeleton } from './components/ui/skeleton';
 
+async function getCDLIProjects() {
+  const newAPIURL = "https://cdli.mpiwg-berlin.mpg.de/api/projects"; // Replace with the ACTUAL new API URL
+
+  try {
+    const response = await fetch(newAPIURL);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data && Array.isArray(data)) { // Adjust based on the new API's response structure
+      console.log("List of CDLI Projects:");
+      data.forEach(project => {
+        console.log(project.name); // Adjust based on the new API's response structure
+      });
+    } else {
+      console.error("Error: Could not find the 'projects' list in the API response.");
+      console.log("Raw response:", JSON.stringify(data, null, 2));
+    }
+
+  } catch (error) {
+    console.error("Error fetching CDLI projects:", error);
+  }
+}
+
 function App() {
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [resultBoxState, setResultBoxState] = useState<"prompt"|"fetching"|"answer">("prompt")
   const [resultBoxText, setResultBoxText] = useState<string>()
   const akkadianTextArea = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    getCDLIProjects()
+  }, [])
 
   async function fetchTranslation() {
     let fetchAkkadianURL = import.meta.env.VITE_AKKADIAN_URL
