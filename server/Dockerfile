@@ -16,4 +16,4 @@ COPY . .
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3001", "--reload", "--reload-dir", "/app"]
 
-EXPOSE 8000
+EXPOSE 3001
