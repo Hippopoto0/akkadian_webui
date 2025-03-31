@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaRegPaste } from "react-icons/fa6";
-import { MdClear } from "react-icons/md";
+import { MdClear } from 'react-icons/md';
+import { AnimatePresence, motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 interface TranslationInputProps {
   akkadianTextRef: React.RefObject<HTMLTextAreaElement | null>;
@@ -16,8 +18,10 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
   const handlePaste = async () => {
     try {
       const clipboardText = await navigator.clipboard.readText();
+      
+      if (clipboardText == "") toast("Clipboard is empty.")
+
       const currentText = akkadianTextRef.current?.value || '';
-      // Append clipboard text and enforce 1000 characters max.
       const combinedText = (currentText + clipboardText).slice(0, 1000);
       if (akkadianTextRef.current) {
         akkadianTextRef.current.value = combinedText;
@@ -49,26 +53,37 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
           aria-label="Akkadian input text area"
         />
         <div className="flex items-center justify-between mt-2">
-          <span className="text-sm text-gray-600">{charCount}/1000</span>
-          <div className="flex space-x-2">
-            <button
+          <span className="text-sm text-gray-400 font-bold">{charCount}/1000</span>
+          {/* Relative container for absolute positioning */}
+          <div className="relative" style={{ width: '3rem', height: '2rem' }}>
+            <motion.button
               type="button"
               onClick={handlePaste}
-              className="p-2 rounded hover:bg-blue-100"
+              className="p-2 rounded hover:bg-blue-100 absolute bottom-[0.075rem]"
               aria-label="Paste"
+              // When clear is present, shift left by 30px, else at x: 0.
+              animate={charCount > 0 ? { x: -30 } : { x: 0 }}
+              transition={{ duration: 0.2 }}
             >
-              {/* Clipboard icon */}
-              <FaRegPaste className='text-gray-500 size-5' />
-            </button>
-            <button
-              type="button"
-              onClick={handleClear}
-              className="p-2 rounded hover:bg-red-100"
-              aria-label="Clear"
-            >
-              {/* Clear icon */}
-              <MdClear className='text-gray-500 size-6' />
-            </button>
+              <FaRegPaste className="text-gray-500 text-2xl" />
+            </motion.button>
+            <AnimatePresence>
+              {charCount > 0 && (
+                <motion.button
+                  key="clear-button"
+                  type="button"
+                  onClick={handleClear}
+                  className="p-2 rounded hover:bg-red-100 absolute right-0 bottom-[0.075rem]"
+                  aria-label="Clear"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <MdClear className="text-gray-500 text-2xl" />
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
