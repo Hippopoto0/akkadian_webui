@@ -1,11 +1,11 @@
 // src/components/ActionFooter.tsx
 import { IoSend } from "react-icons/io5";
-import { GuideDialog } from "./GuideDialog"; // Adjust path
-import { AboutDialog } from "./AboutDialog"; // Adjust path
+import { GuideDialog } from "../features/dialogs/GuideDialog";
+import { AboutDialog } from "../features/dialogs/AboutDialog";
 
 interface ActionFooterProps {
   onTranslate: () => void;
-  isTranslating: boolean; // To disable button during fetch
+  isTranslating: boolean;
 }
 
 export function ActionFooter({ onTranslate, isTranslating }: ActionFooterProps) {
@@ -24,7 +24,7 @@ export function ActionFooter({ onTranslate, isTranslating }: ActionFooterProps) 
           active:translate-y-[0.5rem]
           disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-[0rem_0.5rem_0rem] disabled:translate-y-0`} // Disabled styles
         onClick={onTranslate}
-        disabled={isTranslating} // Disable when fetching
+        disabled={isTranslating}
       >
         {isTranslating ? 'Translating...' : 'Translate'}
         {!isTranslating && <IoSend className='text-white w-4 ml-2' />}

@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './App.css'; // Keep global styles if needed
 
 // API and Types
@@ -8,32 +8,18 @@ import type { TranslationState } from './types'; // Adjust path
 
 // UI Components
 import { NavBar } from './components/NavBar'; // Adjust path
-import { TranslationInput } from './components/TranslationInput'; // Adjust path
-import { TranslationOutput } from './components/TranslationOutput'; // Adjust path
+import { TranslationInput } from './features/translation/TranslationInput'; // Adjust path
+import { TranslationOutput } from './features/translation/TranslationOutput'; // Adjust path
 import { ActionFooter } from './components/ActionFooter'; // Adjust path
 import { Toaster } from "@/components/ui/sonner"; // Adjust path
 import { toast } from "sonner"
 
-// Unused API call - keep or remove based on need
-// import { getCDLIProjects } from './api/cdli'; // Adjust path
-
 function App() {
-  // State for translation process
   const [resultBoxState, setResultBoxState] = useState<TranslationState>("prompt");
   const [resultBoxText, setResultBoxText] = useState<string | undefined>(undefined);
 
-  // Ref for the input text area
   const akkadianTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  // --- Effects ---
-  // useEffect(() => {
-  //   // Example: Fetch CDLI projects on mount
-  //   // Currently unused in the UI, so commented out.
-  //   // Activate and integrate if needed for features like "Search Corpus".
-  //   // getCDLIProjects().catch(console.error);
-  // }, []);
-
-  // --- Event Handlers ---
   const handleTranslate = async () => {
     const akkadianText = akkadianTextAreaRef.current?.value;
 
