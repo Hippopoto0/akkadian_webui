@@ -49,7 +49,7 @@ function App() {
 
   // --- Render ---
   return (
-    <main className='bg-purple-50 w-full h-screen flex flex-col'> {/* Lighter background? */}
+    <main className='bg-purple-50 w-full fixed h-full flex flex-col'> {/* Lighter background? */}
       <NavBar />
 
       <section className='flex-1 grid grid-rows-2 gap-4 p-4 md:gap-8 md:p-8 grid-cols-1 md:grid-cols-2 md:grid-rows-1 overflow-hidden'> {/* Prevent layout shifts */}
