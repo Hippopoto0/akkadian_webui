@@ -10,6 +10,7 @@ COPY requirements.txt .
 
 # RUN pip install uv --no-cache-dir && \
 #     uv pip install --system -r requirements.txt
+RUN pip install transformers[torch]
 RUN pip install -r requirements.txt
 
 COPY . .

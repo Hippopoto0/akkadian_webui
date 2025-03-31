@@ -4,7 +4,7 @@ import { IoIosArrowDropdown } from "react-icons/io";
 import { toast } from "sonner";
 import englishLogo from "../assets/english_communication.png";
 import tabletLogo from "../assets/tablet_shrunk.png";
-import { ExampleSentencesDialog } from "../features/akkadian-searching/ExampleSentencesDialog";
+import { ExampleSentencesDialog } from "../features/akkadian-examples/ExampleSentencesDialog";
 
 export function NavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

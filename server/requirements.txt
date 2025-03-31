@@ -2,3 +2,6 @@ fastapi
 uvicorn
 transformers[torch]
 sentencepiece
+pydantic
+pydantic-settings
+beautifulsoup4

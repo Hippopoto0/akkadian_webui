@@ -3,6 +3,13 @@ import { FaRegPaste } from "react-icons/fa6";
 import { MdClear } from 'react-icons/md';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'sonner';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 
 interface TranslationInputProps {
   akkadianTextRef: React.RefObject<HTMLTextAreaElement | null>;
@@ -56,34 +63,51 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
           <span className="text-sm text-gray-400 font-bold">{charCount}/1000</span>
           {/* Relative container for absolute positioning */}
           <div className="relative" style={{ width: '3rem', height: '2rem' }}>
-            <motion.button
-              type="button"
-              onClick={handlePaste}
-              className="p-2 rounded hover:bg-blue-100 absolute bottom-[0.075rem]"
-              aria-label="Paste"
-              // When clear is present, shift left by 30px, else at x: 0.
-              animate={charCount > 0 ? { x: -30 } : { x: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <FaRegPaste className="text-gray-500 text-2xl" />
-            </motion.button>
-            <AnimatePresence>
-              {charCount > 0 && (
-                <motion.button
-                  key="clear-button"
-                  type="button"
-                  onClick={handleClear}
-                  className="p-2 rounded hover:bg-red-100 absolute right-0 bottom-[0.075rem]"
-                  aria-label="Clear"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <MdClear className="text-gray-500 text-2xl" />
-                </motion.button>
-              )}
-            </AnimatePresence>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.button
+                    type="button"
+                    onClick={handlePaste}
+                    className="p-2 rounded hover:bg-blue-100 absolute bottom-[0.075rem]"
+                    aria-label="Paste"
+                    // When clear is present, shift left by 30px, else at x: 0.
+                    animate={charCount > 0 ? { x: -30 } : { x: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <FaRegPaste className="text-gray-500 text-2xl" />
+                  </motion.button>
+                </TooltipTrigger>
+                <TooltipContent className='border-1 -translate-y-1'>
+                  <p>Paste</p>
+                </TooltipContent>
+              </Tooltip>
+                  <AnimatePresence>
+                    {charCount > 0 && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                      <motion.button
+                        key="clear-button"
+                        type="button"
+                        onClick={handleClear}
+                        className="p-2 rounded hover:bg-red-100 absolute right-0 bottom-[0.075rem]"
+                        aria-label="Clear"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <MdClear className="text-gray-500 text-2xl" />
+                      </motion.button>
+                      </TooltipTrigger>
+                      <TooltipContent className='border-1 -translate-y-1'>
+                        <p>Clear</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    )}
+                  </AnimatePresence>
+
+            </TooltipProvider>
           </div>
         </div>
       </div>
