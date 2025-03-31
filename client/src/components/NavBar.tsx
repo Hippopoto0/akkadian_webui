@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import englishLogo from "../assets/english_communication.png";
 import tabletLogo from "../assets/tablet_shrunk.png";
 import { ExampleSentencesDialog } from "../features/akkadian-examples/ExampleSentencesDialog";
+import { SearchCorpusDialog } from "@/features/akkadian-searching/SearchCorpusDialog";
 
 export function NavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -49,14 +50,7 @@ export function NavBar() {
           </div>
           {/* Right Side: Search Corpus */}
           <div>
-            <button
-              onClick={handleSearchCorpusClick}
-              className="px-4 py-2 inline-flex items-center bg-gray-300 rounded-md font-bold text-gray-500 cursor-not-allowed"
-              aria-disabled="true"
-            >
-              Search Corpus
-              <IoIosArrowDropdown className="ml-2" />
-            </button>
+            <SearchCorpusDialog />
           </div>
         </div>
 
@@ -108,13 +102,7 @@ export function NavBar() {
         </div>
         <div className="mt-4 flex flex-col gap-4">
           <ExampleSentencesDialog />
-          <button
-            onClick={handleSearchCorpusClick}
-            className="px-4 py-2 bg-gray-300 rounded-md font-bold text-gray-500 text-left"
-            aria-disabled="true"
-          >
-            Search Corpus
-          </button>
+          <SearchCorpusDialog />
         </div>
       </div>
     </>

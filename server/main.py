@@ -79,7 +79,9 @@ async def translate_akkadian(request_body: Dict = Body(..., example={"text": "ex
 async def search(request_body: Dict = Body(..., example={"text": "example search term"})):
     search_term = request_body.get("text")
 
-    print(search_corpus(search_term=search_term))
+    res = search_corpus(search_term=search_term)
+    print(res)
+    return res
 
 @app.get("/items/{item_id}", summary="Read item", description="Returns an item by its ID.")
 async def read_item(item_id: int, q: str = None):
