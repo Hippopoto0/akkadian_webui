@@ -19,7 +19,7 @@ export function GuideDialog() {
       <DialogContent className='bg-white'>
         <DialogHeader>
           <DialogTitle>How to Use the Translator</DialogTitle>
-          <DialogDescription>
+          <DialogDescription asChild>
             <div className="space-y-3 text-gray-700"> {/* Add spacing and consistent text color */}
               <p>
                 Click <span className="font-semibold">Example Sentences</span> to view a list of transliterated Akkadian sentences.

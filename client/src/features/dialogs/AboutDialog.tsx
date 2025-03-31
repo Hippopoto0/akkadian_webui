@@ -22,10 +22,13 @@ export function AboutDialog() {
           <DialogDescription asChild>
              <div className="space-y-3 text-gray-700">
                 <p>
-                    This tool provides experimental machine translations from transliterated Akkadian to English.
+                    This tool provides a translator from transliterated Akkadian to English.
                 </p>
                 <p>
-                    It utilizes a model trained for this purpose. Accuracy may vary, and it's intended as a helpful aid rather than a definitive scholarly resource.
+                  This was made as part of my Dissertation, evaluating different transformer models in their ability to translate Akkadian. This model is trained from MarianMT, and was one of the top performers.
+                </p>
+                <p>
+                    Accuracy may vary, and it's intended as a helpful aid rather than a definitive scholarly resource.
                 </p>
                 <p>
                     The example sentences are sourced from publicly available corpora.
