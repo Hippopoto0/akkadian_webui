@@ -71,7 +71,7 @@ export function SearchCorpusDialog() {
                     <DialogTitle>Search the CDLI Corpus</DialogTitle>
                     <DialogDescription asChild>
                         <div>
-                            <form onSubmit={submitSearch} method="post" className="w-full h-12 flex flex-row items-center justify-between border-1 rounded-md p-2">
+                            <form onSubmit={submitSearch} method="post" autoComplete="off" className="w-full h-12 flex flex-row items-center justify-between border-1 rounded-md p-2">
                                 <input type="text" name="cdli-search" id="" placeholder="Search (cyrus, gilgamesh etc.)" className="flex-1 outline-0 h-10 text-lg" />
                                 <button type="submit" className="bg-purple-500 text-white font-bold px-3 py-2 rounded-md ml-auto hover:bg-purple-600 active:bg-purple-700">Search CDLI</button>
                             </form>

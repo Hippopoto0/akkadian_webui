@@ -22,18 +22,20 @@ export function AboutDialog() {
           <DialogDescription asChild>
              <div className="space-y-3 text-gray-700">
                 <p>
-                    This tool provides a translator from transliterated Akkadian to English.
+                    This tool provides a translator from transliterated Akkadian to English. Made by Daniel Jones.
                 </p>
                 <p>
-                  This was made as part of my Dissertation, evaluating different transformer models in their ability to translate Akkadian. This model is trained from MarianMT, and was one of the top performers.
+                  This was made as part of my Dissertation, evaluating different transformer models in their ability to translate Akkadian. This model is trained from MarianMT, it's small so I can run it on a cheap server.
                 </p>
                 <p>
                     Accuracy may vary, and it's intended as a helpful aid rather than a definitive scholarly resource.
                 </p>
                 <p>
-                    The example sentences are sourced from publicly available corpora.
+                    The example sentences are sourced from the CDLI publicly available corpora.
                 </p>
-                 {/* Add more details: version, acknowledgements, links, etc. */}
+                <p>
+                  Due to the model being lightweight, it only translates ~20 words at a time, and context is lost outside that window, because of this translations can seem jarring, but you can usually gather the jist.
+                </p>
                 <p className="text-xs text-gray-500 pt-2">Version: Demo</p>
              </div>
           </DialogDescription>
