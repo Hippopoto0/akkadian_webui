@@ -10,33 +10,12 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FormEvent, useState } from "react";
 import { IoIosArrowDropdown } from "react-icons/io";
-import { AkkadianSentence } from "../akkadian-examples/AkkadianSentence";
-
-interface Metadata {
-  title: string;
-  artifact_link: string;
-  'Witness to composite(s)': string;
-  'Primary Publication': string;
-  Collection: string;
-  'Museum no.': string;
-  Provenience: string;
-  Period: string;
-  'Object Type': string;
-  Material: string;
-  Date: string;
-}
-
-interface SearchResult {
-  image_url: string;
-  metadata: Metadata;
-  transliteration: string[];
-}
-
-type SearchResults = SearchResult[];
+import { SearchItemThumbnail } from "./SearchItemThumbnail";
+import { SearchResults } from "@/types";
 
 export function SearchCorpusDialog() {
     const [loading, setLoading] = useState(false);
-    const [searchResults, setSearchResults] = useState<any>(null);
+    const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     async function submitSearch(e: FormEvent) {
@@ -65,8 +44,8 @@ export function SearchCorpusDialog() {
                     throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
                 }
 
-                const data = await response.json();
-                console.log(data)
+                const data: SearchResults = await response.json();
+                console.log(data);
                 setSearchResults(data);
             } catch (e: any) {
                 setError(e.message);
@@ -75,7 +54,6 @@ export function SearchCorpusDialog() {
             }
         } else {
             setLoading(false);
-            // Optionally set an error if the search term is empty
             setError("Please enter a search term.");
         }
     }
@@ -94,7 +72,7 @@ export function SearchCorpusDialog() {
                     <DialogDescription asChild>
                         <div>
                             <form onSubmit={submitSearch} method="post" className="w-full h-12 flex flex-row items-center justify-between border-1 rounded-md p-2">
-                                <input type="text" name="cdli-search" id="" className="flex-1 outline-0 h-10 text-xl" />
+                                <input type="text" name="cdli-search" id="" placeholder="Search (cyrus, gilgamesh etc.)" className="flex-1 outline-0 h-10 text-lg" />
                                 <button type="submit" className="bg-purple-500 text-white font-bold px-3 py-2 rounded-md ml-auto hover:bg-purple-600 active:bg-purple-700">Search CDLI</button>
                             </form>
                             {loading && (
@@ -107,12 +85,12 @@ export function SearchCorpusDialog() {
                                     Error: {error}
                                 </div>
                             )}
-                            {searchResults && (
-                            <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 bg-white"> {/* Added border & bg */}
-                                {searchResults.map((searchResult: SearchResult, _: number) => ( // Added index for key
-                                    <SearchItemThumbnail searchResult={searchResult} />
-                                ))}
-                            </ScrollArea>
+                            {(searchResults && searchResults.length > 1) && (
+                                <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 bg-white"> {/* Added border & bg */}
+                                    {searchResults.map((searchResult, index) => ( // Added index for key
+                                        <SearchItemThumbnail key={index} searchResult={searchResult} />
+                                    ))}
+                                </ScrollArea>
                             )}
                         </div>
                     </DialogDescription>
@@ -120,58 +98,4 @@ export function SearchCorpusDialog() {
             </DialogContent>
         </Dialog>
     );
-}
-
-function SearchItemThumbnail({ searchResult }: { searchResult: SearchResult}) {
-    const [isItemDialogOpen, setItemDialogOpen] = useState(false)
-
-    return <div className="w-full h-40 border-1 rounded-lg mt-2 flex flex-row items-center">
-        <div className="flex-1 flex flex-col p-2">
-            <h1 className=" text-md font-bold">{searchResult.metadata.title}</h1>
-            <h2>{searchResult.metadata.Period}</h2>
-            <h2 className="bold text-gray-500">{searchResult.metadata.Material}</h2>
-            <Dialog open={isItemDialogOpen} onOpenChange={setItemDialogOpen}>
-                <DialogTrigger asChild>
-                    <button className=" bg-purple-500 px-2 py-2 rounded-md text-white font-bold">View {searchResult.transliteration.length} text sections</button>
-                </DialogTrigger>
-                <DialogContent className="bg-gray-50 w-full max-w-2xl">
-                    <DialogTitle>
-                        <div className=" flex flex-row items-center justify-between">
-                            <div>
-                                <h1>
-                                    {searchResult.metadata.title.split("(P")[0]}
-                                </h1>
-                                <h2 className="text-gray-600 text-sm mt-1">
-                                    {searchResult.metadata.Period}
-                                </h2>
-                            </div>
-                            <div className="w-20 h-20 overflow-hidden mr-4">
-                                <img className=" object-cover" src={searchResult.image_url} alt={"image of " + searchResult.metadata.title} />
-                            </div>
-                        </div>
-                    </DialogTitle>
-                    <DialogDescription asChild>
-                        <>
-                            <p>This was fetched from the CDLI project, you can find this object 
-                                {" "}<span>
-                                    <a href={searchResult.metadata.artifact_link} target="_blank" className="text-blue-400">here</a>
-                                </span>
-                            </p>
-                            <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 gap-4 bg-white"> {/* Added border & bg */}
-                                {searchResult.transliteration.map((text) =>
-                                    <>
-                                        <AkkadianSentence text={text} />
-                                        <div className="h-[1px] bg-gray-300"></div>
-                                    </>
-                                )}
-                            </ScrollArea>
-                        </>
-                    </DialogDescription>
-                </DialogContent>
-            </Dialog>
-        </div>
-        <div className="  w-40 h-full p-2 overflow-hidden">
-            <img src={searchResult.image_url} alt={ "image of " + searchResult.metadata.title} className="object-cover"  />
-        </div>
-    </div>
 }
