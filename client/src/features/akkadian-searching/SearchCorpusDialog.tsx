@@ -157,16 +157,12 @@ function SearchItemThumbnail({ searchResult }: { searchResult: SearchResult}) {
                                     <a href={searchResult.metadata.artifact_link} target="_blank" className="text-blue-400">here</a>
                                 </span>
                             </p>
-                            {/* <p>
-                                This tablet has {searchResult.transliteration.length} different sections, sometimes this corresponds to different sides of the tablet (obverse, reverse), sometimes a section happens from broken lines.
-                            </p>
-                            <p>
-                                The scraping isn't perfect, but was done in such away to group together text that should flow, and therefore give decent translations
-                            </p> */}
-
-                            <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 bg-white"> {/* Added border & bg */}
+                            <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 gap-4 bg-white"> {/* Added border & bg */}
                                 {searchResult.transliteration.map((text) =>
-                                    <AkkadianSentence text={text} />
+                                    <>
+                                        <AkkadianSentence text={text} />
+                                        <div className="h-[1px] bg-gray-300"></div>
+                                    </>
                                 )}
                             </ScrollArea>
                         </>

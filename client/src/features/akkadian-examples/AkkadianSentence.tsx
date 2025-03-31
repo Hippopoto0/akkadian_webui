@@ -13,7 +13,7 @@ export function AkkadianSentence({ text }: AkkadianSentenceProps) {
 
   return (
     <div className='grid grid-cols-[1fr_auto] items-center gap-2 py-1'> {/* Use 1fr for text */}
-      <p className='font-medium text-sm text-gray-700 break-words'>{text}</p> {/* Use p, adjust font */}
+      <p className='font-medium text-sm text-gray-700 break-words max-h-52 overflow-scroll'>{text}</p> {/* Use p, adjust font */}
       <button
         className='flex items-center justify-center p-1 rounded hover:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-purple-500'
         onClick={handleCopy}

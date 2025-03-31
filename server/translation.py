@@ -49,13 +49,15 @@ class AkkadianTranslator:
                 full_prompt,
                 max_length=128,
                 truncation=True,
-                return_tensors="pt"
+                return_tensors="pt",
             ).to(self.device)
 
             with torch.no_grad():
                 generated_tokens = self.model.generate(
                     **inputs,
-                    max_length=128
+                    max_length=128,
+                    repetition_penalty=1.3,
+                    no_repeat_ngram_size=3
                 )
             predicted_translation = self.tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
             return predicted_translation

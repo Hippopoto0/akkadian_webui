@@ -56,9 +56,28 @@ async def read_root():
         raise HTTPException(status_code=500, detail=f"Translation error: {str(e)}")
 
 @app.post("/translate/", summary="Translate Akkadian text", description="Receives Akkadian text and returns the English translation.")
+# async def translate_akkadian(request_body: Dict = Body(..., example={"text": "example akkadian text"})):
+#     """
+#     Receives Akkadian text in the request body and returns the English translation.
+#     """
+#     if translator is None:
+#         raise HTTPException(status_code=503, detail="Translation service unavailable.")
+#     try:
+#         akkadian_text = request_body.get("text")
+#         if not akkadian_text:
+#             raise HTTPException(status_code=400, detail="Missing 'text' in the request body")
+
+#         translation_output = translator.translate(akkadian_text)
+#         return {"message": translation_output}
+#     except HTTPException:
+#         raise
+#     except Exception as e:
+#         logging.error(f"Translation error for input '{akkadian_text}': {e}")
+#         raise HTTPException(status_code=500, detail=f"Translation error: {str(e)}")
 async def translate_akkadian(request_body: Dict = Body(..., example={"text": "example akkadian text"})):
     """
     Receives Akkadian text in the request body and returns the English translation.
+    The text is split into groups of 20 words to improve translation performance.
     """
     if translator is None:
         raise HTTPException(status_code=503, detail="Translation service unavailable.")
@@ -67,13 +86,25 @@ async def translate_akkadian(request_body: Dict = Body(..., example={"text": "ex
         if not akkadian_text:
             raise HTTPException(status_code=400, detail="Missing 'text' in the request body")
 
-        translation_output = translator.translate(akkadian_text)
-        return {"message": translation_output}
+        # Split the text into words and create chunks of 20 words each
+        words = akkadian_text.split()
+        chunk_size = 20
+        translated_chunks = []
+        for i in range(0, len(words), chunk_size):
+            chunk = " ".join(words[i:i+chunk_size])
+            translation_chunk = translator.translate(chunk)
+            translated_chunks.append(translation_chunk)
+        
+        # Concatenate the translated chunks with a space
+        full_translation = " ".join(translated_chunks)
+        return {"message": full_translation}
+    
     except HTTPException:
         raise
     except Exception as e:
         logging.error(f"Translation error for input '{akkadian_text}': {e}")
         raise HTTPException(status_code=500, detail=f"Translation error: {str(e)}")
+
 
 @app.post("/search/")
 async def search(request_body: Dict = Body(..., example={"text": "example search term"})):
