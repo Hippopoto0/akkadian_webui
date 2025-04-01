@@ -66,7 +66,7 @@ export function SearchCorpusDialog() {
                     <IoIosArrowDropdown className='ml-2' />
                 </button>
             </DialogTrigger>
-            <DialogContent className='bg-gray-50 w-full max-w-2xl'> {/* Responsive width */}
+            <DialogContent className='bg-gray-50 w-full max-w-2xl' aria-describedby="Dialog showing search options"> {/* Responsive width */}
                 <DialogHeader>
                     <DialogTitle>Search the CDLI Corpus</DialogTitle>
                     <DialogDescription asChild>

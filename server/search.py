@@ -1,92 +1,96 @@
 import requests
 from bs4 import BeautifulSoup
+import logging
 
-def filter_transliteration_from_translation(text: str) -> list[list[str]]:
+class CDLICorpusSearcher:
     """
-    Removes line numbering from raw CDLI text
-    Removes en:, fr:, tr: lines
-    Splits the text by obverse, reverse, broken, column, side, meaning resultant strings within 
-    the list should be unbroken snippets of Akkadian text
+    A class for searching the CDLI corpus for Akkadian texts with transliteration.
     """
-    text_lines = text.split("\n")
-    all_transliterations = []
-    current_transliteration = []
 
-    metadata_keywords = ["reverse", "obverse", "broken", "column", "side"] # Add more if needed
+    metadata_keywords = ["reverse", "obverse", "broken", "column", "side"]
 
-    def line_filter(line: str):
-        line = line.strip()
-        if line.startswith("ts:"): # transcription
-            return False
-        if line.startswith("en:"): # english translation
-            return False
-        if line.startswith("fr:"): # french translation (rare)
-            return False
-        if not line: # Skip empty lines
-            return False
-        return True
+    @staticmethod
+    def filter_transliteration_from_translation(text: str) -> list[str]:
+        """
+        Removes line numbering from raw CDLI text, excludes translation lines,
+        and splits the text into continuous snippets of Akkadian text.
+        """
+        text_lines = text.split("\n")
+        all_transliterations = []
+        current_transliteration = []
 
-    def line_clean(line: str):
-        split_numbers = line.split(".", 1) # split once
-        if len(split_numbers) == 2:
-            line_only = split_numbers[1].strip()
-            return line_only
-        else:
-            return None
+        def line_filter(line: str) -> bool:
+            line = line.strip()
+            if line.startswith("ts:"):  # transcription
+                return False
+            if line.startswith("en:"):  # English translation
+                return False
+            if line.startswith("fr:"):  # French translation (rare)
+                return False
+            if not line:  # Skip empty lines
+                return False
+            return True
 
-    filtered_lines = filter(line_filter, text_lines)
-
-    for line in filtered_lines:
-        cleaned_line = line_clean(line)
-        if cleaned_line:
-            current_transliteration.append(cleaned_line)
-        else:
-            is_metadata = False
-            lower_line = line.lower()
-            for keyword in metadata_keywords:
-                if keyword in lower_line:
-                    is_metadata = True
-                    break
-
-            if is_metadata:
-                if current_transliteration:
-                    all_transliterations.append(" ".join(current_transliteration))
-                    current_transliteration = []
+        def line_clean(line: str):
+            split_numbers = line.split(".", 1)  # split once
+            if len(split_numbers) == 2:
+                return split_numbers[1].strip()
             else:
-                print(f"Error splitting line: '{line}'") # Keep the error message for unhandled cases
+                return None
 
-    if current_transliteration:
-        all_transliterations.append(" ".join(current_transliteration))
+        filtered_lines = filter(line_filter, text_lines)
 
-    # Remove any potential empty lists at the beginning if the first lines were metadata
-    while all_transliterations and not all_transliterations[0]:
-        all_transliterations.pop(0)
+        for line in filtered_lines:
+            cleaned_line = line_clean(line)
+            if cleaned_line:
+                current_transliteration.append(cleaned_line)
+            else:
+                # Check if the line is metadata
+                is_metadata = any(keyword in line.lower() for keyword in CDLICorpusSearcher.metadata_keywords)
+                if is_metadata:
+                    if current_transliteration:
+                        all_transliterations.append(" ".join(current_transliteration))
+                        current_transliteration = []
+                else:
+                    logging.error("Error splitting line: '%s'", line)
 
-    return all_transliterations
+        if current_transliteration:
+            all_transliterations.append(" ".join(current_transliteration))
 
+        # Remove any potential empty snippets at the beginning
+        while all_transliterations and not all_transliterations[0]:
+            all_transliterations.pop(0)
 
-def search_corpus(search_term: str):
-    """
-    Searches the CDLI corpus for Akkadian texts with transliteration
-    containing the given search term and extracts image, metadata, and transliteration.
+        return all_transliterations
 
-    Args:
-        search_term (str): The term to search for in the corpus.
+    def search(self, search_term: str) -> list[dict]:
+        """
+        Searches the CDLI corpus for Akkadian texts with transliteration containing the given search term
+        and extracts image, metadata, and transliteration.
 
-    Returns:
-        list: A list of dictionaries, where each dictionary contains:
+        Returns:
+            A list of dictionaries, each containing:
               - 'image_url': URL of the artifact's image.
-              - 'metadata': A dictionary containing metadata fields.
-              - 'transliteration': The transliteration text.
-              Returns None if the request fails.
-    """
-    url_to_fetch = f"https://cdli.mpiwg-berlin.mpg.de/search?simple-value%5B%5D={search_term}&simple-field%5B%5D=keyword&f%5Blanguage%5D%5B%5D=Akkadian&f%5Batf_transliteration%5D%5B%5D=With"
+              - 'metadata': A dictionary of metadata fields.
+              - 'transliteration': The filtered transliteration text.
+        Raises:
+            Exception: If the HTTP request fails or the HTML cannot be parsed.
+        """
+        url_to_fetch = (
+            f"https://cdli.mpiwg-berlin.mpg.de/search?simple-value%5B%5D={search_term}"
+            "&simple-field%5B%5D=keyword&f%5Blanguage%5D%5B%5D=Akkadian&f%5Batf_transliteration%5D%5B%5D=With"
+        )
 
-    try:
-        response = requests.get(url_to_fetch)
-        response.raise_for_status()  # Raise an exception for bad status codes
-
-        soup = BeautifulSoup(response.content, 'html.parser')
+        try:
+            response = requests.get(url_to_fetch)
+            response.raise_for_status()  # Raise exception for HTTP errors
+            soup = BeautifulSoup(response.content, 'html.parser')
+        except requests.exceptions.RequestException as e:
+            logging.error("Error fetching URL: %s", e)
+            raise Exception(f"Error fetching URL: {e}")
+        except Exception as e:
+            logging.error("Error parsing HTML: %s", e)
+            raise Exception(f"Error parsing HTML: {e}")
 
         results = []
         search_cards = soup.find_all('div', class_='search-card')
@@ -96,7 +100,7 @@ def search_corpus(search_term: str):
             metadata = {}
             transliteration = None
 
-            # Extract Image
+            # Extract Image URL
             media_div = card.find('div', class_='search-card-media')
             if media_div:
                 img_tag = media_div.find('img')
@@ -113,30 +117,14 @@ def search_corpus(search_term: str):
 
                 info_paragraphs = content_div.find_all('p', class_='my-0')
                 for p in info_paragraphs:
-                    if p.find('b'):
-                        label = p.find('b').text.replace(':', '').strip()
-                        value = p.text.replace(p.find('b').text, '').strip()
+                    bold = p.find('b')
+                    if bold:
+                        label = bold.text.replace(':', '').strip()
+                        value = p.text.replace(bold.text, '').strip()
                         metadata[label] = value
 
-                period_paragraph = content_div.find('p', class_='my-0') # Period is often the last my-0 before mt-3
-                if period_paragraph and "Period:" in period_paragraph.text:
-                    metadata['Period'] = period_paragraph.text.replace('Period:', '').strip()
-
-                object_type_paragraph = content_div.find('p', class_='my-0')
-                if object_type_paragraph and "Object Type:" in object_type_paragraph.text:
-                    metadata['Object Type'] = object_type_paragraph.text.replace('Object Type:', '').strip()
-
-                material_paragraph = content_div.find('p', class_='my-0')
-                if material_paragraph and "Material:" in material_paragraph.text:
-                    metadata['Material'] = material_paragraph.text.replace('Material:', '').strip()
-
-                date_paragraph = content_div.find('p', class_='my-0')
-                if date_paragraph and "Date:" in date_paragraph.text:
-                    metadata['Date'] = date_paragraph.text.replace('Date:', '').strip()
-
-
             # Extract Transliteration
-            transliteration_paragraph = content_div.find('p', class_='mt-3')
+            transliteration_paragraph = content_div.find('p', class_='mt-3') if content_div else None
             if transliteration_paragraph and transliteration_paragraph.find('b') and transliteration_paragraph.find('b').text == 'Transliteration:':
                 transliteration_parts = []
                 for content in transliteration_paragraph.contents:
@@ -148,7 +136,7 @@ def search_corpus(search_term: str):
                         transliteration_parts.append(content.text.strip())
                 transliteration = "".join(transliteration_parts).strip()
 
-            cleaned_transliteration = filter_transliteration_from_translation(transliteration)
+            cleaned_transliteration = self.filter_transliteration_from_translation(transliteration) if transliteration else []
 
             results.append({
                 'image_url': image_url,
@@ -157,10 +145,3 @@ def search_corpus(search_term: str):
             })
 
         return results
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching URL: {e}")
-        return None
-    except Exception as e:
-        print(f"Error parsing HTML: {e}")
-        return None
