@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { FaLongArrowAltRight, FaBars, FaTimes } from "react-icons/fa";
-import { IoIosArrowDropdown } from "react-icons/io";
-import { toast } from "sonner";
 import englishLogo from "../assets/english_communication.png";
 import tabletLogo from "../assets/tablet_shrunk.png";
 import { ExampleSentencesDialog } from "../features/akkadian-examples/ExampleSentencesDialog";
@@ -9,10 +7,6 @@ import { SearchCorpusDialog } from "@/features/akkadian-searching/SearchCorpusDi
 
 export function NavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const handleSearchCorpusClick = () => {
-    toast("Search Corpus feature is not available yet.");
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
