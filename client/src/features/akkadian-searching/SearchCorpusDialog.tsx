@@ -76,8 +76,11 @@ export function SearchCorpusDialog() {
                                 <button type="submit" className="bg-purple-500 text-white font-bold px-3 py-2 rounded-md ml-auto hover:bg-purple-600 active:bg-purple-700 whitespace-nowrap overflow-hidden">Search CDLI</button>
                             </form>
                             {loading && (
-                                <div className="mt-2 text-center">
-                                    Loading...
+                                // <div className="mt-2 text-center">
+                                //     Loading...
+                                // </div>
+                                <div className=" w-full flex items-center justify-center mt-4">
+                                    <div className="loader scale-75 w-10"></div>
                                 </div>
                             )}
                             {error && (

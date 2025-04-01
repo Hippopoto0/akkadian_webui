@@ -14,10 +14,10 @@ export function SearchItemThumbnail({ searchResult }: SearchItemThumbnailProps) 
 
     return (
         <div className="w-full h-40 border-1 rounded-lg mt-2 flex flex-row items-center">
-            <div className="flex-1 flex flex-col p-2">
+            <div className="flex-1 flex flex-col p-2 items-start justify-evenly h-full text-left">
                 <h1 className=" text-md font-bold">{searchResult.metadata.title}</h1>
-                <h2>{searchResult.metadata.Period}</h2>
-                <h2 className="bold text-gray-500">{searchResult.metadata.Material}</h2>
+                <h2 className=" text-xs">{searchResult.metadata.Period}</h2>
+                <h2 className="bold text-gray-500 hidden md:flex">{searchResult.metadata.Material}</h2>
                 <Dialog open={isItemDialogOpen} onOpenChange={setItemDialogOpen}>
                     <DialogTrigger asChild>
                         <button className=" bg-purple-500 px-2 py-2 rounded-md text-white font-bold">View {searchResult.transliteration.length} text sections</button>
@@ -34,7 +34,7 @@ export function SearchItemThumbnail({ searchResult }: SearchItemThumbnailProps) 
                     </DialogContent>
                 </Dialog>
             </div>
-            <div className="w-40 h-full p-2 overflow-hidden">
+            <div className="w-20 md:w-40 h-full p-2 overflow-hidden">
                 <img src={searchResult.image_url} alt={"image of " + searchResult.metadata.title} className="object-cover" />
             </div>
         </div>
