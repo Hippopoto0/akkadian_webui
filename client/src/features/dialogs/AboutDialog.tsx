@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"; // Adjust path
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function AboutDialog() {
   return (
@@ -20,7 +21,7 @@ export function AboutDialog() {
         <DialogHeader>
           <DialogTitle>About This Translator</DialogTitle>
           <DialogDescription asChild>
-             <div className="space-y-3 text-gray-700">
+             <ScrollArea className="space-y-3 text-gray-700 max-h-64 relative">
                 <p>
                     This tool provides a translator from transliterated Akkadian to English. Made by Daniel Jones.
                 </p>
@@ -37,7 +38,10 @@ export function AboutDialog() {
                   Due to the model being lightweight, it only translates ~20 words at a time, and context is lost outside that window, because of this translations can seem jarring, but you can usually gather the jist.
                 </p>
                 <p className="text-xs text-gray-500 pt-2">Version: Demo</p>
-             </div>
+
+                <div className="h-10"></div>
+                <div className="absolute bottom-0 w-full h-10 bg-gradient-to-b from-transparent to-white"></div>
+             </ScrollArea>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

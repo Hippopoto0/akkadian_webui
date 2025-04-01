@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"; // Adjust path
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function GuideDialog() {
   return (
@@ -20,7 +21,7 @@ export function GuideDialog() {
         <DialogHeader>
           <DialogTitle>How to Use the Translator</DialogTitle>
           <DialogDescription asChild>
-            <div className="space-y-3 text-gray-700"> {/* Add spacing and consistent text color */}
+            <ScrollArea className="space-y-3 text-gray-700 max-h-64 relative"> {/* Add spacing and consistent text color */}
               <p>
                 Click <span className="font-semibold">Example Sentences</span> to view a list of transliterated Akkadian sentences.
               </p>
@@ -39,7 +40,9 @@ export function GuideDialog() {
               <p>
                 The server scrapes the CDLI page with that term (for Akkadian with transliteration only), then cleans the text to remove translations/metadata. It splits the text into different parts. For example, a tablet might have a front(obverse) and back(reverse) side, or might have broken lines. This splitting to a decent extent ensures the input is a continuous passage.
               </p>
-            </div>
+              <div className="h-10"></div>
+              <div className="absolute bottom-0 w-full h-10 bg-gradient-to-b from-transparent to-white"></div>
+            </ScrollArea>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
