@@ -1,6 +1,6 @@
 Akkadian Translator WebUI
 
-This is an extension to my disseration assessing the performance of different transformer models in translating Akkadian. I made several models to do this, with varying parameter sizes and built from various causal and seq2seq models, they can be [found on HuggingFace](https://huggingface.co/Hippopoto0).
+This is an extension to my disseration assessing the performance of different fine-tuned transformer models in translating Akkadian. I fine-tuned several models to do this, with varying parameter sizes and built from various causal and seq2seq models, they can be [found on HuggingFace](https://huggingface.co/Hippopoto0).
 
 I thought it would be cool to make a tool that can demo a model built, in particular the MarianMT based model.
 
