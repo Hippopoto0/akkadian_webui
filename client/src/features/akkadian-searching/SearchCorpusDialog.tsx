@@ -8,7 +8,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"; // Adjust path
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { SearchItemThumbnail } from "./SearchItemThumbnail";
 import { SearchResults } from "@/types";
@@ -17,6 +17,16 @@ export function SearchCorpusDialog() {
     const [loading, setLoading] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [isFormFocused, setIsFormFocused] = useState(false);
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const handleFormFocus = () => {
+        setIsFormFocused(true);
+    };
+
+    const handleFormBlur = () => {
+        setIsFormFocused(false);
+    };
 
     async function submitSearch(e: FormEvent) {
         e.preventDefault(); // Prevent default form submission
@@ -58,6 +68,8 @@ export function SearchCorpusDialog() {
         }
     }
 
+    const dialogContentClass = `bg-gray-50 w-full max-w-2xl transition-transform duration-200 ${isFormFocused ? '-translate-y-52' : ''}`;
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -66,19 +78,24 @@ export function SearchCorpusDialog() {
                     <IoIosArrowDropdown className='ml-2' />
                 </button>
             </DialogTrigger>
-            <DialogContent className='bg-gray-50 w-full max-w-2xl' aria-describedby="Dialog showing search options"> {/* Responsive width */}
+            <DialogContent className={dialogContentClass} aria-describedby="Dialog showing search options"> {/* Responsive width */}
                 <DialogHeader>
                     <DialogTitle>Search the CDLI Corpus</DialogTitle>
                     <DialogDescription asChild>
                         <div>
-                            <form onSubmit={submitSearch} method="post" autoComplete="off" className="w-full h-12 flex flex-row items-center justify-between border-1 rounded-md p-2">
+                            <form
+                                ref={formRef}
+                                onSubmit={submitSearch}
+                                method="post"
+                                autoComplete="off"
+                                className="w-full h-12 flex flex-row items-center justify-between border-1 rounded-md p-2"
+                                onFocus={handleFormFocus}
+                                onBlur={handleFormBlur}
+                            >
                                 <input type="text" name="cdli-search" id="" placeholder="Search (cyrus, gilgamesh etc.)" className="flex-1 outline-0 h-10 text-md sm:text-lg" />
                                 <button type="submit" className="bg-purple-500 text-white font-bold px-3 py-2 rounded-md ml-auto hover:bg-purple-600 active:bg-purple-700 whitespace-nowrap overflow-hidden">Search CDLI</button>
                             </form>
                             {loading && (
-                                // <div className="mt-2 text-center">
-                                //     Loading...
-                                // </div>
                                 <div className=" w-full flex items-center justify-center mt-4">
                                     <div className="loader scale-75 w-10"></div>
                                 </div>
@@ -88,7 +105,7 @@ export function SearchCorpusDialog() {
                                     Error: {error}
                                 </div>
                             )}
-                            {(searchResults && searchResults.length > 1) && (
+                            {(searchResults && searchResults.length > 0) && (
                                 <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 bg-white"> {/* Added border & bg */}
                                     {searchResults.map((searchResult, index) => ( // Added index for key
                                         <SearchItemThumbnail key={index} searchResult={searchResult} />
