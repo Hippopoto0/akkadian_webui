@@ -12,7 +12,6 @@ import { AkkadianSentence } from "./AkkadianSentence";
 import type { SentencePair } from "@/types";
 import sentencesData from "@/assets/sentences.json";
 
-// Type guard for safety, although structure is simple
 const isValidSentenceData = (data: any): data is SentencePair[] => {
   return Array.isArray(data) && data.every(item => typeof item?.akk === 'string');
 };

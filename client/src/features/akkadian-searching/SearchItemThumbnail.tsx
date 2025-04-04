@@ -1,4 +1,3 @@
-// src/components/SearchItemThumbnail.tsx
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { useState } from "react";
 import { SearchResult } from "@/types";

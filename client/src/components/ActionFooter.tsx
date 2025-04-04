@@ -1,4 +1,3 @@
-// src/components/ActionFooter.tsx
 import { IoSend } from "react-icons/io5";
 import { GuideDialog } from "../features/dialogs/GuideDialog";
 import { AboutDialog } from "../features/dialogs/AboutDialog";

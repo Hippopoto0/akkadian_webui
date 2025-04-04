@@ -1,6 +1,5 @@
-// src/components/AkkadianSentence.tsx
 import { MdOutlineContentCopy } from "react-icons/md";
-import { copyToClipboard } from "@/lib/clipboard"; // Adjust path
+import { copyToClipboard } from "@/lib/clipboard"; 
 
 interface AkkadianSentenceProps {
   text: string;
@@ -8,7 +7,7 @@ interface AkkadianSentenceProps {
 
 export function AkkadianSentence({ text }: AkkadianSentenceProps) {
   const handleCopy = () => {
-    copyToClipboard(text); // Feedback is handled within copyToClipboard
+    copyToClipboard(text); 
   };
 
   return (

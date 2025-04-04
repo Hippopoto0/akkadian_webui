@@ -14,11 +14,8 @@ export function NavBar() {
 
   return (
     <>
-      {/* Navigation Bar */}
       <nav className="bg-gray-200 flex items-center justify-between p-4 border-b border-gray-300 relative z-30">
-        {/* Desktop Layout */}
         <div className="hidden md:flex w-full items-center justify-between">
-          {/* Left Side: Example Sentences */}
           <div>
             <ExampleSentencesDialog />
           </div>
