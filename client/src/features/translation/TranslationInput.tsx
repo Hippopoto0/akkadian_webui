@@ -9,6 +9,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Switch } from '@/components/ui/switch';
+import { translitToCuneiform } from '@/lib/transliteration/tranlitToCuneiform';
 
 
 interface TranslationInputProps {
@@ -17,9 +19,11 @@ interface TranslationInputProps {
 
 export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
   const [charCount, setCharCount] = useState(0);
+  const [isShowCuneiformChecked, setShowCuneiformChecked] = useState<boolean>(false)
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCharCount(e.target.value.length);
+    setShowCuneiformChecked(false)
   };
 
   const handlePaste = async () => {
@@ -33,6 +37,7 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
       if (akkadianTextRef.current) {
         akkadianTextRef.current.value = combinedText;
         setCharCount(combinedText.length);
+        setShowCuneiformChecked(true)
       }
     } catch (err) {
       console.error('Failed to read clipboard contents:', err);
@@ -43,24 +48,57 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
     if (akkadianTextRef.current) {
       akkadianTextRef.current.value = '';
       setCharCount(0);
+      setShowCuneiformChecked(false)
     }
   };
+
+  const handleSwitch = () => {
+    if (isShowCuneiformChecked) {
+      setShowCuneiformChecked(false)
+    } else {
+      if (akkadianTextRef.current && akkadianTextRef.current.value == "") {
+        toast.warning("Put some text in before switching to Cuneiform view.", { description: "Go to Search Corpus and find some!"})
+      } else {
+        setShowCuneiformChecked(true)
+      }
+    }
+  }
 
   return (
     <div className="flex items-center justify-center h-full">
       <div className="bg-gray-100 w-full h-full rounded-xl p-4 shadow-inner border border-gray-300 flex flex-col">
-        <textarea
-          ref={akkadianTextRef}
-          placeholder="Enter transliterated Akkadian text here..."
-          name="akkadian-input"
-          id="akkadian-input"
-          maxLength={1000}
-          onChange={handleTextChange}
-          className="w-full flex-grow resize-none outline-none bg-transparent text-gray-800 text-lg leading-relaxed"
-          aria-label="Akkadian input text area"
-        />
+        <div className='w-full flex-grow relative' id='container-cuneiform-latin-textareas'>
+          <textarea
+            ref={akkadianTextRef}
+            placeholder="Enter transliterated Akkadian text here..."
+            name="akkadian-input"
+            id="akkadian-input"
+            maxLength={1000}
+            onChange={handleTextChange}
+            className="absolute w-full h-full resize-none outline-none bg-transparent text-gray-800 text-lg leading-relaxed"
+            aria-label="Akkadian input text area"
+          />
+          {/* show cuneiform translation if switch is checked */}
+          {isShowCuneiformChecked &&
+            <div className='absolute w-full h-full bg-gray-100 overflow-auto text-gray-800'>
+              {translitToCuneiform(akkadianTextRef.current?.value)}
+            </div>
+          }
+        </div>
         <div className="flex items-center justify-between mt-2">
-          <span className="text-sm text-gray-400 font-bold">{charCount}/1000</span>
+          <div className='flex items-center justify-center gap-4'>
+            <span className="text-sm text-gray-400 font-bold w-16">{charCount}/1000</span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                    <Switch checked={isShowCuneiformChecked} onClick={() => handleSwitch()} className='bg-gray-300 scale-125' />
+                </TooltipTrigger>
+                <TooltipContent className='border-1 -translate-y-1 bg-gray-100'>
+                  <p>Show Cuneiform</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <div className="relative" style={{ width: '3rem', height: '2rem' }}>
             <TooltipProvider>
               <Tooltip>
@@ -77,7 +115,7 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
                     <FaRegPaste className="text-gray-500 text-2xl" />
                   </motion.button>
                 </TooltipTrigger>
-                <TooltipContent className='border-1 -translate-y-1'>
+                <TooltipContent className='border-1 -translate-y-1 bg-gray-100'>
                   <p>Paste</p>
                 </TooltipContent>
               </Tooltip>
@@ -99,7 +137,7 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
                         <MdClear className="text-gray-500 text-2xl" />
                       </motion.button>
                       </TooltipTrigger>
-                      <TooltipContent className='border-1 -translate-y-1'>
+                      <TooltipContent className='border-1 -translate-y-1 bg-gray-100'>
                         <p>Clear</p>
                       </TooltipContent>
                     </Tooltip>
