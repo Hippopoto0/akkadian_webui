@@ -11,6 +11,8 @@ import { IoIosArrowDropdown } from "react-icons/io";
 import { AkkadianSentence } from "./AkkadianSentence";
 import type { SentencePair } from "@/types";
 import sentencesData from "@/assets/sentences.json";
+import { useEffect } from "react";
+import { translitToCuneiform } from "@/lib/transliteration/tranlitToCuneiform";
 
 const isValidSentenceData = (data: any): data is SentencePair[] => {
   return Array.isArray(data) && data.every(item => typeof item?.akk === 'string');
@@ -23,6 +25,7 @@ if (!isValidSentenceData(sentencesData)) {
 
 
 export function ExampleSentencesDialog() {
+
   return (
     <Dialog>
       <DialogTrigger asChild>

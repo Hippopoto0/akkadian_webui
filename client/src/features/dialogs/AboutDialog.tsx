@@ -2,6 +2,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -38,6 +39,7 @@ export function AboutDialog() {
                 </p>
                 <p className="text-xs text-gray-500 pt-2">Version: Demo</p>
 
+                <p className="text-xs text-gray-500 pt-2">Latin to Unicode Cuneiform converted from: <a href="https://andrewsenior.com/cuneify/" className="text-blue-400">https://andrewsenior.com/cuneify/</a></p>
                 <div className="h-10"></div>
                 <div className="absolute bottom-0 w-full h-10 bg-gradient-to-b from-transparent to-white"></div>
              </ScrollArea>

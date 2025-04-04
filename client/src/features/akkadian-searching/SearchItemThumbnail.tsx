@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchResult } from "@/types";
 import { AkkadianSentence } from "../akkadian-examples/AkkadianSentence";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -65,6 +65,7 @@ function SearchResultTitle({ title, period, imageUrl }: SearchResultTitleProps) 
 }
 
 function SearchResultDetails({ searchResult }: {searchResult: SearchResult}) {
+
     return (
         <>
             <p>This was fetched from the CDLI project, you can find this object
