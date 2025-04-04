@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SearchResult } from "@/types";
 import { AkkadianSentence } from "../akkadian-examples/AkkadianSentence";
 import { ScrollArea } from "@/components/ui/scroll-area";
