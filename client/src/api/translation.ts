@@ -1,5 +1,3 @@
-// src/api/translation.ts
-
 /**
  * Fetches the English translation for a given Akkadian text.
  * @param akkadianText - The Akkadian text to translate.
@@ -54,12 +52,3 @@ export async function fetchAkkadianTranslation(akkadianText: string): Promise<st
     throw error instanceof Error ? error : new Error("An unknown error occurred during translation.");
   }
 }
-
-
-// Note: getCDLIProjects is kept separate as its usage is unclear in the original component
-// If needed, it can be implemented similarly.
-/*
-async function getCDLIProjects() {
- // ... implementation ...
-}
-*/
