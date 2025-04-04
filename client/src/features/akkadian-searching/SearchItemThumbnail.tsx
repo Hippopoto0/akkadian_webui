@@ -19,7 +19,7 @@ export function SearchItemThumbnail({ searchResult }: SearchItemThumbnailProps) 
                 <h2 className="bold text-gray-500 hidden md:flex">{searchResult.metadata.Material}</h2>
                 <Dialog open={isItemDialogOpen} onOpenChange={setItemDialogOpen}>
                     <DialogTrigger asChild>
-                        <button className=" bg-purple-500 px-2 py-2 rounded-md text-white font-bold">View {searchResult.transliteration.length} text sections</button>
+                        <button className=" bg-purple-500 px-2 py-2 rounded-md text-white font-bold hover:bg-purple-600 active:bg-purple-600 cursor-pointer">View {searchResult.transliteration.length} text sections</button>
                     </DialogTrigger>
                     <DialogContent className="bg-gray-50 w-full max-w-2xl">
                         <DialogHeader>

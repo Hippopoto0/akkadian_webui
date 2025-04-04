@@ -67,7 +67,7 @@ export function SearchCorpusDialog() {
         }
     }
 
-    const dialogContentClass = `bg-gray-50 w-full max-w-2xl transition-transform duration-200 ${isFormFocused ? '-translate-y-52' : ''}`;
+    const dialogContentClass = `bg-gray-50 w-full max-w-2xl transition-transform duration-200 ${isFormFocused && (!searchResults || searchResults.length === 0) ? '-translate-y-52' : ''}`;
 
     return (
         <Dialog>
