@@ -73,11 +73,11 @@ function SearchResultDetails({ searchResult }: {searchResult: SearchResult}) {
                     <a href={searchResult.metadata.artifact_link} target="_blank" className="text-blue-400">here</a>
                 </span>
             </p>
-            <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 gap-4 bg-white"> {/* Added border & bg */}
+            <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 gap-4 bg-white">
                 {searchResult.transliteration.map((text, index) => (
                     <div key={index}>
                         <AkkadianSentence text={text} />
-                        <div className="h-[1px] bg-gray-300 my-2"></div> {/* Added margin for better spacing */}
+                        <div className="h-[1px] bg-gray-300 my-2"></div>
                     </div>
                 ))}
             </ScrollArea>

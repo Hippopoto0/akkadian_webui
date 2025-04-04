@@ -1,4 +1,3 @@
-// src/components/ExampleSentencesDialog.tsx
 import {
     Dialog,
     DialogContent,
@@ -6,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"; // Adjust path
+} from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FormEvent, useState, useRef } from "react";
 import { IoIosArrowDropdown } from "react-icons/io";
@@ -29,7 +28,7 @@ export function SearchCorpusDialog() {
     };
 
     async function submitSearch(e: FormEvent) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         setLoading(true);
         setSearchResults(null);
         setError(null);
@@ -78,7 +77,7 @@ export function SearchCorpusDialog() {
                     <IoIosArrowDropdown className='ml-2' />
                 </button>
             </DialogTrigger>
-            <DialogContent className={dialogContentClass} aria-describedby="Dialog showing search options"> {/* Responsive width */}
+            <DialogContent className={dialogContentClass} aria-describedby="Dialog showing search options">
                 <DialogHeader>
                     <DialogTitle>Search the CDLI Corpus</DialogTitle>
                     <DialogDescription asChild>
@@ -106,7 +105,7 @@ export function SearchCorpusDialog() {
                                 </div>
                             )}
                             {(searchResults && searchResults.length > 0) && (
-                                <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 bg-white"> {/* Added border & bg */}
+                                <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 mt-2 bg-white">
                                     {searchResults.map((searchResult, index) => ( // Added index for key
                                         <SearchItemThumbnail key={index} searchResult={searchResult} />
                                     ))}

@@ -1,4 +1,3 @@
-// src/components/ExampleSentencesDialog.tsx
 import {
   Dialog,
   DialogContent,
@@ -6,12 +5,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"; // Adjust path
-import { ScrollArea } from "@/components/ui/scroll-area"; // Adjust path
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { IoIosArrowDropdown } from "react-icons/io";
-import { AkkadianSentence } from "./AkkadianSentence"; // Adjust path
-import type { SentencePair } from "@/types"; // Adjust path
-import sentencesData from "@/assets/sentences.json"; // Adjust path
+import { AkkadianSentence } from "./AkkadianSentence";
+import type { SentencePair } from "@/types";
+import sentencesData from "@/assets/sentences.json";
 
 // Type guard for safety, although structure is simple
 const isValidSentenceData = (data: any): data is SentencePair[] => {
@@ -33,19 +32,19 @@ export function ExampleSentencesDialog() {
           <IoIosArrowDropdown className='ml-2' />
         </button>
       </DialogTrigger>
-      <DialogContent className='bg-gray-50 w-full max-w-2xl'> {/* Responsive width */}
+      <DialogContent className='bg-gray-50 w-full max-w-2xl'>
         <DialogHeader>
           <DialogTitle>Example Akkadian Sentences</DialogTitle>
           <DialogDescription asChild>
-             <div> {/* Add a wrapping div if needed */}
+             <div>
                 <p className="mb-4 text-sm text-gray-600">Click the copy icon to copy a sentence, then paste it into the translator.</p>
-                <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 bg-white"> {/* Added border & bg */}
+                <ScrollArea className="h-[60vh] max-h-[400px] rounded-md border p-4 bg-white">
                 {sentences.length > 0 ? (
                     sentences.map((akkEnPair, index) => (
-                    <div key={index}> {/* Add key for list items */}
+                    <div key={index}>
                         <AkkadianSentence text={akkEnPair.akk} />
                         {index < sentences.length - 1 && ( /* Don't add divider after last item */
-                         <div className='w-full h-[1px] bg-black/20 my-2'></div> /* Use lighter divider, add margin */
+                         <div className='w-full h-[1px] bg-black/20 my-2'></div>
                         )}
                     </div>
                     ))

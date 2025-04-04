@@ -61,7 +61,6 @@ export function TranslationInput({ akkadianTextRef }: TranslationInputProps) {
         />
         <div className="flex items-center justify-between mt-2">
           <span className="text-sm text-gray-400 font-bold">{charCount}/1000</span>
-          {/* Relative container for absolute positioning */}
           <div className="relative" style={{ width: '3rem', height: '2rem' }}>
             <TooltipProvider>
               <Tooltip>

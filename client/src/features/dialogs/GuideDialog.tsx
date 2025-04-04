@@ -1,4 +1,3 @@
-// src/components/GuideDialog.tsx
 import {
   Dialog,
   DialogContent,
@@ -6,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"; // Adjust path
+} from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function GuideDialog() {
@@ -21,7 +20,7 @@ export function GuideDialog() {
         <DialogHeader>
           <DialogTitle>How to Use the Translator</DialogTitle>
           <DialogDescription asChild>
-            <ScrollArea className="space-y-3 text-gray-700 max-h-64 relative"> {/* Add spacing and consistent text color */}
+            <ScrollArea className="space-y-3 text-gray-700 max-h-64 relative">
               <p>
                 Click <span className="font-semibold">Example Sentences</span> to view a list of transliterated Akkadian sentences.
               </p>
