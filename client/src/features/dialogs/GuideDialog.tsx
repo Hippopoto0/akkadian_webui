@@ -13,7 +13,7 @@ export function GuideDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className='w-20 h-10 rounded-lg font-bold bg-gray-300 inline-flex items-center justify-center text-gray-800 hover:bg-gray-400 transition-colors'>
+        <button className='w-20 h-10 rounded-lg font-bold bg-gray-300 inline-flex items-center justify-center text-gray-800 hover:bg-gray-400 transition-colors cursor-pointer'>
             Guide
         </button>
       </DialogTrigger>

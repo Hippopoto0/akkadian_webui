@@ -93,7 +93,7 @@ export function SearchCorpusDialog() {
                                 onBlur={handleFormBlur}
                             >
                                 <input type="text" name="cdli-search" id="" placeholder="Search (cyrus, gilgamesh etc.)" className="flex-1 outline-0 h-10 text-md sm:text-lg w-32 md:w-auto" />
-                                <button type="submit" className="bg-purple-500 text-white font-bold px-3 py-2 rounded-md ml-auto hover:bg-purple-600 active:bg-purple-700 whitespace-nowrap overflow-hidden">Search CDLI</button>
+                                <button type="submit" className="bg-purple-500 text-white font-bold px-3 py-2 rounded-md ml-auto hover:bg-purple-600 active:bg-purple-700 whitespace-nowrap overflow-hidden cursor-pointer">Search CDLI</button>
                             </form>
                             {loading && (
                                 <div className=" w-full flex items-center justify-center mt-4">
