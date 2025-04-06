@@ -25,7 +25,7 @@ export function AboutDialog() {
                     This tool provides a translator from transliterated Akkadian to English. Made by Daniel Jones.
                 </p>
                 <p>
-                  This was made as part of my Dissertation, evaluating different transformer models in their ability to translate Akkadian. This model is trained from MarianMT, it's small so I can run it on a cheap server.
+                  This was made as an extenstion to my Dissertation, evaluating different transformer models in their ability to translate Akkadian. This model is trained from MarianMT, it's small so I can run it on a cheap server.
                 </p>
                 <p>
                     Accuracy may vary, and it's intended as a helpful aid rather than a definitive scholarly resource.
